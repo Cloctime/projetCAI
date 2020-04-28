@@ -2,6 +2,7 @@ package com.example.projet;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -12,6 +13,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        Log.d("TAG", "salut la fouere ");
+        //start mon activité   -> décommentes les 2 lignes en dessous
+        //startActivity(new Intent(this, niveau.class));
+        //finish();
     }
 }
