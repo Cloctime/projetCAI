@@ -22,6 +22,7 @@ public class niveau extends AppCompatActivity {
     private boolean twoAxes;
     private TextView textview1;
     private TextView textview2;
+    private TextView textview3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,7 @@ public class niveau extends AppCompatActivity {
 
         textview1 = findViewById(R.id.textView);
         textview2 =  findViewById(R.id.textView2);
+
 
         Switch s = findViewById(R.id.switch1);
         s.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -59,9 +61,9 @@ public class niveau extends AppCompatActivity {
         }
 
         public void onSensorChanged(SensorEvent event) {
-            textview1.setText("x value: "+String.valueOf(event.values[0])); //x value
+            textview1.setText("y value: " + String.valueOf(event.values[1])); //y value
             if(twoAxes) {
-                textview2.setText("y value: " + String.valueOf(event.values[1])); //y value
+                textview2.setText("x value: "+String.valueOf(event.values[0])); //x value
             }
             else{
                 textview2.setText("");
