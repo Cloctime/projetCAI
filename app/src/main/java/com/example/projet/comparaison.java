@@ -11,18 +11,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.text.Format;
 import java.util.UUID;
 
 
@@ -52,15 +51,6 @@ public class comparaison extends AppCompatActivity {
         }
         else{
             scrollView =  findViewById(R.id.comparaison_scroll_bluetooth);
-            Button button = new Button(this);
-            button.setText("accept");
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    acceptThread.run();
-                }
-            });
-            scrollView.addView(button);
             initBluetooth();
             makeDiscoverable();
             acceptThread = new AcceptThread();
@@ -96,8 +86,6 @@ public class comparaison extends AppCompatActivity {
                     public void onClick(View v) {
                         connectThread =  new ConnectThread(device);
                         connectThread.run();
-                        /*acceptThread = new AcceptThread();
-                        acceptThread.run();*/
                     }
                 });
                 scrollView.addView(b);
@@ -194,6 +182,7 @@ public class comparaison extends AppCompatActivity {
                     Log.d(String.valueOf(socket.isConnected()), "run: ");
                     serverSocket = socket;
                     makeButtonReceive();
+                    makeButtonSend();
                     //manageMyConnectedSocket(socket); -------------------------------------------------------------------------------
                     try {
                         mmServerSocket.close();
@@ -216,17 +205,19 @@ public class comparaison extends AppCompatActivity {
     }
 
     private void makeButtonReceive() {
-        Button b = findViewById(R.id.button);
+        Button b = findViewById(R.id.buttonReceive);
         b.setText("recevoir");
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    /*Toast t = new Toast(getApplicationContext());
-                    t.setText(String.valueOf();
-                    t.show();*/
-                    TextView t = findViewById(R.id.textView3);
-                    t.setText(String.valueOf(serverSocket.getInputStream().read()));
+                    TextView t = findViewById(R.id.textViewReceive);
+                    InputStream inputStream = serverSocket.getInputStream();
+                    String s = "";
+                    while(inputStream.available()!=0){
+                        s+= (char)inputStream.read();
+                    }
+                    t.setText(s);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -276,11 +267,8 @@ public class comparaison extends AppCompatActivity {
 
             // The connection attempt succeeded. Perform work associated with
             // the connection in a separate thread.
-            Log.d(String.valueOf(mmSocket.isConnected()), "run: ");
-            setContentView(R.layout.bluetooth);
             clientSocket = mmSocket;
-            makeButtonSend();
-
+            acceptThread.run();
 
             //manageMyConnectedSocket(mmSocket);
         }
@@ -296,13 +284,16 @@ public class comparaison extends AppCompatActivity {
     }
 
     private void makeButtonSend() {
-        Button b = findViewById(R.id.button);
+        Button b = findViewById(R.id.buttonSend);
         b.setText("envoyer");
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    clientSocket.getOutputStream().write(15);
+                    EditText editText =  findViewById(R.id.editTextToSend);
+                    String stringToSend = editText.getText().toString();
+                    byte[] bytes  = stringToSend.getBytes();
+                    clientSocket.getOutputStream().write((bytes));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
