@@ -53,7 +53,7 @@ public class Niveau extends AppCompatActivity {
             }
         });
 
-        sensorManager.registerListener(gyroListener, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(gyroListener, sensor, 99999999);
     }
 
     public SensorEventListener gyroListener = new SensorEventListener() {
@@ -61,9 +61,9 @@ public class Niveau extends AppCompatActivity {
         }
 
         public void onSensorChanged(SensorEvent event) {
-            textview1.setText("y value: " + String.valueOf(event.values[1])); //y value
+            textview1.setText("y value: " + String.format("%.1f", (event.values[1])*90/9.81)); //y value
             if(twoAxes) {
-                textview2.setText("x value: "+String.valueOf(event.values[0])); //x value
+                textview2.setText("x value: "+String.format("%.1f", (event.values[0])*90/9.81)); //x value
             }
             else{
                 textview2.setText("");
