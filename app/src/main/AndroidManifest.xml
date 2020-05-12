@@ -4,12 +4,12 @@
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-
-    <!-- If your app targets Android 9 or lower, you can declare
-         ACCESS_COARSE_LOCATION instead. -->
+    <!--
+ If your app targets Android 9 or lower, you can declare
+         ACCESS_COARSE_LOCATION instead.
+    -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
@@ -19,8 +19,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".comparaison"></activity>
-        <activity android:name=".Niveau" />
+        <activity android:name=".Testsensor"></activity>
+        <activity android:name=".Comparison" />
+        <activity android:name=".RotationSensor" />
+        <activity android:name=".Connexion" />
+        <activity android:name=".Level" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

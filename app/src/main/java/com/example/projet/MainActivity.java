@@ -32,13 +32,21 @@ public class MainActivity extends AppCompatActivity {
                 openComparaison();
             }
         });
+        Button buttonTestSensor = findViewById(R.id.buttonTestSensor);
+        buttonTestSensor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Testsensor.class);
+                startActivity(intent);
+            }
+        });
     }
     public void openNiveau() {
-        Intent intent = new Intent(this, Niveau.class);
+        Intent intent = new Intent(this, Level.class);
         startActivity(intent);
     }
     public void openComparaison() {
-        Intent intent = new Intent(this, comparaison.class);
+        Intent intent = new Intent(this, Connexion.class);
         startActivity(intent);
     }
 

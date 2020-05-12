@@ -14,7 +14,7 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
-public class Niveau extends AppCompatActivity {
+public class Level extends AppCompatActivity {
 
     private Vibrator v;
     private  SensorManager sensorManager;

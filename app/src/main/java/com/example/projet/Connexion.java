@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -33,26 +34,21 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.Socket;
 import java.text.Format;
 import java.util.UUID;
 
 
-public class comparaison extends AppCompatActivity {
+public class Connexion extends AppCompatActivity {
     private BluetoothAdapter mBluetoothAdapter;
     private static final int ENABLE_BLUETOOTH = 1;
     private static final int DISCOVERY_REQUEST = 2;
     private AcceptThread acceptThread;
     private ConnectThread connectThread;
-    private IntentFilter filter = new IntentFilter();
     private LinearLayout scrollView;
-    private BluetoothSocket serverSocket;
-    private BluetoothSocket clientSocket;
-    private Sensor sensor;
-    private int precision;
-    private Vibrator v;
-    private int vibrate;
-    private boolean mesurePlan;
-    private boolean mesureAngle;
+    public static BluetoothSocket serverSocket;
+    public static BluetoothSocket clientSocket;
+
 
 
 
@@ -62,6 +58,7 @@ public class comparaison extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comparaison);
+
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if(mBluetoothAdapter == null ) {
@@ -110,7 +107,7 @@ public class comparaison extends AppCompatActivity {
                 // object and its info from the Intent.
                 final BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 String deviceName = device.getName();
-                Log.d("TAG", deviceName);
+                //Log.d("TAG", deviceName);
                 String deviceHardwareAddress = device.getAddress(); // MAC address
                 Button b = new Button(context);
                 b.setText(deviceName);
@@ -208,51 +205,14 @@ public class comparaison extends AppCompatActivity {
                 if (socket != null) {
                     // A connection was accepted. Perform work associated with
                     // the connection in a separate thread.
-                    setContentView(R.layout.bluetooth);
+
                     Log.d(String.valueOf(socket.isConnected()), "run: ");
                     serverSocket = socket;
-                    SeekBar seekBar = findViewById(R.id.seekBar);
-                    seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                        @Override
-                        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                            precision = progress;
-                            TextView textView = findViewById(R.id.precision);
-                            textView.setText(String.valueOf(progress));
-                        }
 
-                        @Override
-                        public void onStartTrackingTouch(SeekBar seekBar) {
 
-                        }
+                    //start comparisonActivity
+                    startComparisonAcitvity();
 
-                        @Override
-                        public void onStopTrackingTouch(SeekBar seekBar) {
-
-                        }
-                    });
-                    mesurePlan = true;
-                    mesureAngle = false;
-                    final Switch switchAngle = findViewById(R.id.switchAngle);
-                    final Switch switchPlan = findViewById(R.id.switchPlan);
-                    switchPlan.setChecked(true);
-                    switchAngle.setChecked(false);
-                    switchAngle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                            switchPlan.setChecked(!isChecked);
-                            mesureAngle = isChecked;
-                            mesurePlan = !isChecked;
-                        }
-                    });
-                    switchPlan.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                            switchAngle.setChecked(!isChecked);
-                            mesurePlan = isChecked;
-                            mesureAngle = !isChecked;
-                        }
-                    });
-                    initializeSensorsAndTransmition();
                     //makeButtonReceive();
                     //makeButtonSend();
                     //manageMyConnectedSocket(socket); -------------------------------------------------------------------------------
@@ -275,6 +235,8 @@ public class comparaison extends AppCompatActivity {
             }
         }
     }
+
+    //--------------------------------------------------------------------------------------------
 
 
 
@@ -341,169 +303,18 @@ public class comparaison extends AppCompatActivity {
             }
         }
     }
+    //----------------------------------------------------------------------------------------------
 
 
 
-
-
-
-
-
-
-
-
-    /*private void makeButtonSend() {
-        Button b = findViewById(R.id.buttonSend);
-        b.setText("envoyer");
-        b.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    EditText editText =  findViewById(R.id.editTextToSend);
-                    String stringToSend = editText.getText().toString();
-                    byte[] bytes  = stringToSend.getBytes();
-                    clientSocket.getOutputStream().write((bytes));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+    public void startComparisonAcitvity(){
+        Intent i = new Intent(this, Comparison.class);
+        startActivity(i);
 
     }
 
-
-
-
-
-
-    private void makeButtonReceive() {
-        Button b = findViewById(R.id.buttonReceive);
-        b.setText("recevoir");
-        b.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    TextView t = findViewById(R.id.textViewReceive);
-                    InputStream inputStream = serverSocket.getInputStream();
-                    String s = "";
-                    while(inputStream.available()!=0){
-                        s+= (char)inputStream.read();
-                    }
-                    t.setText(s);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-    }*/
-
-
-
-
-
-
-
-
-
-
-    public void initializeSensorsAndTransmition(){
-        precision = 3;
-        SensorManager sensorManager = (SensorManager) this.getSystemService(Context.SENSOR_SERVICE);
-        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
-        sensorManager.registerListener(gyroListener, sensor, 99999);
-        // Initializing vibrator
-        v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
-        vibrate = 0;
+    public static void finishActivity(){
+        Connexion.finishActivity();
     }
-
-    public SensorEventListener gyroListener = new SensorEventListener() {
-        public void onAccuracyChanged(Sensor sensor, int acc) {
-        }
-
-        public void onSensorChanged(SensorEvent event) {
-            //send sensor values
-            double xValue = (event.values[0])*90/9.81;
-            double yValue = (event.values[1])*90/9.81;
-            double zValue = (event.values[2])*90/9.81;
-            String stringToSend = String.format("%.1f", xValue)+"/"+String.format("%.1f", yValue)+"/"+
-                    String.format("%.1f", zValue);
-            byte[] bytes  = stringToSend.getBytes();
-
-            try {
-                clientSocket.getOutputStream().write((bytes));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            //get other device values
-            try {
-                InputStream inputStream = serverSocket.getInputStream();
-                String s = "";
-                while(inputStream.available()!=0){
-                    s+= (char)inputStream.read();
-                }
-
-
-                //show devices rotation differences
-                try {
-                    String axesValues[] = s.split("/");
-                    double xDiff = Math.abs(xValue)-Math.abs(Double.parseDouble(axesValues[0]));
-                    double yDiff = Math.abs(yValue)-Math.abs(Double.parseDouble(axesValues[1]));
-                    double zDiff = Math.abs(zValue)-Math.abs(Double.parseDouble(axesValues[2]));
-
-                    TextView t = findViewById(R.id.textViewXYZ);
-                    t.setText("Différence en x: "+String.format("%.1f",xDiff)+"\nDifférence en y: "+String.format("%.1f",yDiff)+
-                            "\nDifférence en z: "+String.format("%.1f",zDiff));
-                    ConstraintLayout constraintLayout = findViewById(R.id.bluetoothXmlLayout);
-                    if (mesurePlan == true){
-                        if (Math.abs(xDiff) <= precision && Math.abs(yDiff) <= precision && Math.abs(zDiff) <= precision){
-                            if (vibrate == 0){
-                                v.vibrate(100);
-                                vibrate = 1;
-                            }
-                            if (vibrate == 1){
-                                vibrate = -1;
-                            }
-                            constraintLayout.setBackgroundColor(Color.argb(50,0,255,0));
-                        }
-                        else{
-                            vibrate = 0;
-                            constraintLayout.setBackgroundColor(Color.WHITE);
-                        }
-                    }
-                    if (mesureAngle == true ){
-                        if(Math.abs(Math.abs(yDiff)-Math.abs(zDiff)) <= precision && Math.abs(xDiff)<=precision
-                        && Math.abs(yDiff) > precision && Math.abs(zDiff)>precision){
-                            if (vibrate == 0){
-                                v.vibrate(100);
-                                vibrate = 1;
-                            }
-                            if (vibrate == 1){
-                                vibrate = -1;
-                            }
-                            constraintLayout.setBackgroundColor(Color.argb(50,0,255,0));
-                        }
-                        else{
-                            vibrate = 0;
-                            constraintLayout.setBackgroundColor(Color.WHITE);
-                        }
-
-                    }
-
-
-
-                }
-                catch (Exception e){
-                }
-
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    };
-
-
 
 }
