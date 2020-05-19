@@ -181,7 +181,7 @@ public class CustomSurfaceView<mode> extends SurfaceView implements SurfaceHolde
     @Override
     public boolean onTouch(View v, MotionEvent motionEvent) {
 
-        int bColision = 0 ;
+        /*int bColision = 0 ;
 
         if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
             updateThread.toUpdateP = true;
@@ -228,7 +228,7 @@ public class CustomSurfaceView<mode> extends SurfaceView implements SurfaceHolde
         xPos = (int) motionEvent.getX();
         yPos = (int) motionEvent.getY();
 
-
+        */
         return true;
     }
 

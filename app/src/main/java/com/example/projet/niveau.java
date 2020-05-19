@@ -60,14 +60,10 @@ public class niveau extends AppCompatActivity {
         });
 
         sensorManager.registerListener(gyroListener, sensor, SensorManager.SENSOR_DELAY_NORMAL);
-
-        View myView = new CustomSurfaceView<>(this, 30, 10);
-        int w=myView.getWidth();
-        int h=myView.getHeight();
-        ((CustomSurfaceView) myView).getHolder().setFixedSize(w/2,h/2);
-        myView.setOnTouchListener((View.OnTouchListener) myView);
         LinearLayout linearLayout = findViewById(R.id.linearlayout);
-        myView.setBackgroundColor(Color.GREEN);
+        View myView = new CustomSurfaceView<>(this, linearLayout.getWidth()/2, linearLayout.getHeight()/2);
+        myView.setOnTouchListener((View.OnTouchListener) myView);
+        //myView.setBackgroundColor(Color.GREEN);
         linearLayout.addView(myView);
 
 

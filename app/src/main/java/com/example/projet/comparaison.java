@@ -28,7 +28,7 @@ public class comparaison extends AppCompatActivity {
         View myView = new CustomSurfaceView(this,1000,300);
         int w=myView.getWidth();
         int h=myView.getHeight();
-        ((CustomSurfaceView) myView).getHolder().setFixedSize(w/2,h/2);
+        //((CustomSurfaceView) myView).getHolder().setFixedSize(w/2,h/2);
         myView.setOnTouchListener((View.OnTouchListener) myView);
         setContentView(myView);
 
