@@ -29,14 +29,17 @@ public class CustomSurfaceView<mode> extends SurfaceView implements SurfaceHolde
 
     // ball
     private int circleRadius = 90;
-    private int xPos;
-    private int yPos;
 
-    private int aPos;
-    private int bPos;
+    private float xPos;
+    private float yPos;
 
-    private int xOrigine;
-    private int yOrigine;
+    private float aPos;
+    private float bPos;
+
+    private float xOrigine;
+    private float yOrigine;
+    private float aOrigine;
+    private float bOrigine;
 
     private int xVel = 7;
     private int yVel = 7;
@@ -57,7 +60,7 @@ public class CustomSurfaceView<mode> extends SurfaceView implements SurfaceHolde
     Sensor sensor;
 
 
-    public CustomSurfaceView(Context context, int x, int y) {
+    public CustomSurfaceView(Context context, float x, float y,float a, float b) {
         super(context);
 
         // Getting the holder
@@ -70,7 +73,7 @@ public class CustomSurfaceView<mode> extends SurfaceView implements SurfaceHolde
 
         // Setting the color for the paint object
         mPaint.setColor(Color.GREEN);
-        mPaint.setColor(Color.RED);
+        bPaint.setColor(Color.RED);
 
         vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 
@@ -80,6 +83,9 @@ public class CustomSurfaceView<mode> extends SurfaceView implements SurfaceHolde
 
         xOrigine=x;
         yOrigine=y;
+        aOrigine=a;
+        bOrigine=b;
+
 
         aPos=yOrigine;
         bPos=yOrigine;
@@ -146,8 +152,8 @@ public class CustomSurfaceView<mode> extends SurfaceView implements SurfaceHolde
         }
         else if (mode==2){
             sensorManager.registerListener(gyro, sensor, SensorManager.SENSOR_DELAY_NORMAL);
-            xPos -= 5*xGyro;
-            bPos += 5*yGyro;
+            xPos = 5*xGyro;
+            bPos = 5*yGyro;
             if (bPos - circleRadius < 0 || bPos + circleRadius > getHeight()) {
                 // top or  bottom
                 if (bPos - circleRadius < 0) {
@@ -250,6 +256,10 @@ public class CustomSurfaceView<mode> extends SurfaceView implements SurfaceHolde
     public void surfaceCreated(SurfaceHolder holder) {
         xPos = xOrigine;
         yPos = yOrigine;
+        aPos = aOrigine;
+        bPos = bOrigine;
+
+
 
         updateThread = new UpdateThread(this);
         updateThread.setRunning(true);

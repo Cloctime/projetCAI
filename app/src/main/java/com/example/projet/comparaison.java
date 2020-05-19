@@ -22,23 +22,14 @@ public class comparaison extends AppCompatActivity {
             Toast.makeText (this, " Device does not support Bluetooth ", Toast.LENGTH_LONG ).show();
         }
         else{
-            initBluetooth();
+
         }
 
-        View myView = new CustomSurfaceView(this,1000,300);
-        int w=myView.getWidth();
-        int h=myView.getHeight();
-        //((CustomSurfaceView) myView).getHolder().setFixedSize(w/2,h/2);
-        myView.setOnTouchListener((View.OnTouchListener) myView);
-        setContentView(myView);
+
 
 
     }
 
-    private void initBluetooth(){
-        if (!mBluetoothAdapter.isEnabled()){
-            Intent intent = new Intent ( BluetoothAdapter . ACTION_REQUEST_ENABLE );
-            startActivityForResult ( intent , ENABLE_BLUETOOTH );
-        }
-    }
+
+
 }
