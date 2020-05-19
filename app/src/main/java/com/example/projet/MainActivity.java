@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
                 openComparaison();
             }
         });
+
+
     }
     public void openNiveau() {
         Intent intent = new Intent(this, niveau.class);

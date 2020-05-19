@@ -1,16 +1,23 @@
 package com.example.projet;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.view.MarginLayoutParamsCompat;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.view.SurfaceView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -23,6 +30,7 @@ public class niveau extends AppCompatActivity {
     private TextView textview1;
     private TextView textview2;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +60,21 @@ public class niveau extends AppCompatActivity {
         });
 
         sensorManager.registerListener(gyroListener, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+
+        View myView = new CustomSurfaceView<>(this, 30, 10);
+        int w=myView.getWidth();
+        int h=myView.getHeight();
+        ((CustomSurfaceView) myView).getHolder().setFixedSize(w/2,h/2);
+        myView.setOnTouchListener((View.OnTouchListener) myView);
+        LinearLayout linearLayout = findViewById(R.id.linearlayout);
+        myView.setBackgroundColor(Color.GREEN);
+        linearLayout.addView(myView);
+
+
+
+
+
+
     }
 
     public SensorEventListener gyroListener = new SensorEventListener() {
